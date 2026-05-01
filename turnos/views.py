@@ -279,3 +279,17 @@ def gestion_servicios(request):
 
 def gracias(request):
     return render(request, 'gracias.html')
+
+@user_passes_test(es_duena)
+def gestion_clientes(request):
+    """Vista para ver el listado de clientas con diseño lindo"""
+    busqueda = request.GET.get('buscar')
+    if busqueda:
+        clientes = Cliente.objects.filter(nombre__icontains=busqueda)
+    else:
+        clientes = Cliente.objects.all()
+    
+    return render(request, 'gestion_clientes.html', {
+        'clientes': clientes,
+        'busqueda': busqueda
+    })

@@ -1,0 +1,168 @@
+{% extends 'base_panel.html' %}
+
+{% block title %}Mis Clientas{% endblock %}
+
+{% block extra_css %}
+<style>
+    .header-clientes {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+
+    h1 {
+        font-size: 34px;
+        margin: 0;
+    }
+
+    /* Estilo del buscador rosa */
+    .search-container {
+        position: relative;
+        width: 300px;
+    }
+
+    .search-container input {
+        width: 100%;
+        padding: 12px 20px;
+        border-radius: 15px;
+        border: 2px solid #f3c6e2;
+        background: #fff4fb;
+        outline: none;
+        transition: 0.2s;
+    }
+
+    .search-container input:focus {
+        border-color: #d85caf;
+        background: #fff;
+    }
+
+    /* Contenedor de la lista */
+    .lista-clientes {
+        background: white;
+        border-radius: 25px;
+        padding: 10px;
+        border: 1px solid #f3c6e2;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    }
+
+    .cliente-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 20px;
+        border-bottom: 1px solid #fff4fb;
+        transition: 0.2s;
+    }
+
+    .cliente-item:last-child {
+        border-bottom: none;
+    }
+
+    .cliente-item:hover {
+        background: #fffafa;
+    }
+
+    .cliente-info {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .avatar-circle {
+        width: 45px;
+        height: 45px;
+        background: #f3c6e2;
+        color: #d85caf;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .nombre-clienta {
+        font-weight: bold;
+        color: #333;
+        font-size: 17px;
+        text-transform: capitalize;
+        margin-bottom: 2px;
+    }
+
+    .user-tag {
+        font-size: 12px;
+        color: #888;
+        background: #f1f1f1;
+        padding: 2px 8px;
+        border-radius: 8px;
+    }
+
+    .btn-wsp {
+        background: #25D366;
+        color: white;
+        text-decoration: none;
+        padding: 8px 15px;
+        border-radius: 12px;
+        font-size: 14px;
+        font-weight: bold;
+        transition: 0.2s;
+    }
+
+    .btn-wsp:hover {
+        background: #128C7E;
+        color: white;
+        transform: scale(1.05);
+    }
+
+    .btn-edit-small {
+        color: #d85caf;
+        text-decoration: none;
+        font-size: 14px;
+        margin-right: 15px;
+    }
+</style>
+{% endblock %}
+
+{% block contenido %}
+
+<div class="header-clientes">
+    <div>
+        <h1>👩 Mis Clientas</h1>
+        <p style="color: #666;">Total de personas registradas en el sistema.</p>
+    </div>
+
+    <!-- Buscador dinámico -->
+    <form method="GET" class="search-container">
+        <input type="text" name="buscar" placeholder="Buscar por nombre..." value="{{ busqueda|default:'' }}">
+    </form>
+</div>
+
+<div class="lista-clientes">
+    {% for cliente in clientes %}
+    <div class="cliente-item">
+        <div class="cliente-info">
+            <div class="avatar-circle">
+                {{ cliente.nombre|slice:":1"|upper }}
+            </div>
+            <div>
+                <div class="nombre-clienta">{{ cliente.nombre }}</div>
+                <span class="user-tag">@{{ cliente.usuario.username|default:"sin_usuario" }}</span>
+            </div>
+        </div>
+
+        <div>
+            <a href="/admin/turnos/cliente/{{ cliente.id }}/change/" class="btn-edit-small">Editar</a>
+            <a href="https://wa.me/{{ cliente.telefono }}" target="_blank" class="btn-wsp">
+                WhatsApp 📱
+            </a>
+        </div>
+    </div>
+    {% empty %}
+    <div class="p-5 text-center text-muted">
+        <p>No se encontraron clientas registradas.</p>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
