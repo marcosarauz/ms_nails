@@ -16,6 +16,7 @@ from .views import (
     gestion_horarios,
     gestion_bloqueos,
     crear_turno_admin,
+    crear_admin,
 )
 
 urlpatterns = [
@@ -47,4 +48,6 @@ urlpatterns = [
     path('configuracion/bloqueos/', gestion_bloqueos, name='gestion_bloqueos'),
 
     path('dashboard/crear-turno/', crear_turno_admin, name='crear_turno_admin'),
+
+    path('crear-admin/', crear_admin),
 ]

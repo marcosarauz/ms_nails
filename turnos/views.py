@@ -6,6 +6,18 @@ from .models import Servicio, Cliente, Turno, HorarioTrabajo, DiaBloqueado
 from .forms import ServicioForm, TurnoForm  # <--- Paso 1: Importamos el formulario
 from urllib.parse import quote
 from datetime import date, datetime, timedelta
+from django.contrib.auth.models import User
+from django.http import HttpResponse
+
+def crear_admin(request):
+    if not User.objects.filter(username='admin').exists():
+        User.objects.create_superuser(
+            username='admin',
+            password='1234test',
+            email='admin@test.com'
+        )
+        return HttpResponse("Admin creado")
+    return HttpResponse("Ya existe")
 
 
 def es_duena(user):
