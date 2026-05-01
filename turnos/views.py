@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
 from django.contrib.auth import login
 from .models import Servicio, Cliente, Turno, HorarioTrabajo, DiaBloqueado
+from .forms import ServicioForm  # <--- Paso 1: Importamos el formulario
 from urllib.parse import quote
 from datetime import date, datetime, timedelta
 
@@ -256,6 +257,24 @@ def cambiar_estado(request, id, estado):
 @user_passes_test(es_duena)
 def configuracion(request):
     return render(request, 'configuracion.html')
+
+
+@user_passes_test(es_duena)
+def gestion_servicios(request):
+    """Vista estética para que la dueña maneje los servicios"""
+    servicios = Servicio.objects.all()
+    if request.method == 'POST':
+        form = ServicioForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('gestion_servicios')
+    else:
+        form = ServicioForm()
+    
+    return render(request, 'gestion_servicios.html', {
+        'servicios': servicios,
+        'form': form
+    })
 
 
 def gracias(request):

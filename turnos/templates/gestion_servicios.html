@@ -1,0 +1,192 @@
+{% extends 'base_panel.html' %}
+
+{% block title %}Gestión de Servicios{% endblock %}
+
+{% block extra_css %}
+<style>
+    .header-gestion {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+
+    h1 {
+        font-size: 34px;
+        margin: 0;
+    }
+
+    .btn-nuevo {
+        background: #d85caf;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 15px;
+        font-weight: bold;
+        text-decoration: none;
+        border: none;
+        transition: 0.2s;
+        cursor: pointer;
+    }
+
+    .btn-nuevo:hover {
+        background: #b0468d;
+        transform: scale(1.05);
+    }
+
+    .grid-servicios {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+    }
+
+    .card-servicio {
+        background: #fff;
+        border: 2px solid #f3c6e2;
+        border-radius: 22px;
+        padding: 20px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+    }
+
+    .info-principal {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 15px;
+    }
+
+    .info-principal h3 {
+        margin: 0;
+        color: #333;
+        text-transform: capitalize;
+    }
+
+    .precio-tag {
+        background: #fff4fb;
+        color: #d85caf;
+        padding: 5px 12px;
+        border-radius: 10px;
+        font-weight: bold;
+        font-size: 18px;
+    }
+
+    .detalles {
+        color: #666;
+        font-size: 14px;
+        margin-bottom: 20px;
+    }
+
+    .acciones-card {
+        display: flex;
+        gap: 10px;
+    }
+
+    .btn-editar {
+        flex: 1;
+        background: #f8f9fa;
+        color: #666;
+        text-align: center;
+        padding: 8px;
+        border-radius: 10px;
+        text-decoration: none;
+        font-size: 13px;
+        border: 1px solid #ddd;
+    }
+
+    /* Estilos para el Modal (Formulario de carga) */
+    .modal-content {
+        border-radius: 25px;
+        border: none;
+        padding: 20px;
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        color: #d85caf;
+        font-weight: bold;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 10px;
+        border-radius: 12px;
+        border: 1px solid #f3c6e2;
+        margin-bottom: 15px;
+    }
+</style>
+{% endblock %}
+
+{% block contenido %}
+
+<div class="header-gestion">
+    <div>
+        <h1>💅 Mis Servicios</h1>
+        <p style="color: #666;">Administrá los precios y duración de lo que ofrecés.</p>
+    </div>
+    <!-- Botón que activa el modal -->
+    <button class="btn-nuevo" data-bs-toggle="modal" data-bs-target="#modalNuevoServicio">
+        + Nuevo Servicio
+    </button>
+</div>
+
+<div class="grid-servicios">
+    {% for servicio in servicios %}
+    <div class="card-servicio">
+        <div class="info-principal">
+            <h3>{{ servicio.nombre }}</h3>
+            <div class="precio-tag">${{ servicio.precio }}</div>
+        </div>
+        
+        <div class="detalles">
+            <span>🕒 Duración estimada: <strong>{{ servicio.duracion }} min</strong></span>
+        </div>
+
+        <div class="acciones-card">
+            <a href="/admin/turnos/servicio/{{ servicio.id }}/change/" class="btn-editar">Editar</a>
+        </div>
+    </div>
+    {% empty %}
+    <p>Aún no tenés servicios cargados.</p>
+    {% endfor %}
+</div>
+
+<!-- Modal para agregar servicio -->
+<div class="modal fade" id="modalNuevoServicio" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content shadow-lg">
+            <div class="modal-header border-0">
+                <h2 class="fw-bold">Agregar Servicio</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="modal-body">
+                    {% for field in form %}
+                    <div class="form-group mb-3">
+                        <label>{{ field.label }}</label>
+                        {{ field }}
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="modal-footer border-0">
+                    <button type="submit" class="btn-nuevo w-100">Guardar Servicio</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('nuevo') === '1') {
+            var modalElement = document.getElementById('modalNuevoServicio');
+            if (modalElement) {
+                var myModal = new bootstrap.Modal(modalElement);
+                myModal.show();
+            }
+        }
+    });
+</script>
+
+{% endblock %}

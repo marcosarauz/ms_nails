@@ -78,7 +78,8 @@
 
 <div class="grid">
 
-    <a class="card" href="/admin/turnos/servicio/">
+    <!-- Tarjeta de Servicios actualizada -->
+    <a class="card" href="{% url 'gestion_servicios' %}">
         <div class="icono">💅</div>
         <h2>Servicios</h2>
         <p>Agregar, editar precios y duración.</p>
@@ -113,7 +114,7 @@
         <div class="acciones"><span>Entrar</span></div>
     </a>
 
-    <a class="card" href="/dashboard/">
+    <a class="card" href="{% url 'dashboard' %}">
         <div class="icono">🏠</div>
         <h2>Volver al inicio</h2>
         <p>Regresar al panel principal.</p>

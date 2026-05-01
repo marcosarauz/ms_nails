@@ -29,6 +29,13 @@
         text-decoration: none;
         font-weight: bold;
         box-shadow: 0 8px 22px rgba(216, 92, 175, 0.25);
+        transition: 0.2s;
+    }
+
+    .accion:hover {
+        transform: translateY(-3px);
+        background: #c34a9a;
+        color: white;
     }
 
     .accion span {
@@ -91,7 +98,7 @@
 </div>
 
 <div class="acciones-rapidas">
-    <a class="accion" href="/agenda/">
+    <a class="accion" href="{% url 'agenda' %}">
         <span>📅</span>
         Ver agenda
     </a>
@@ -101,7 +108,8 @@
         Crear turno
     </a>
 
-    <a class="accion" href="/admin/turnos/servicio/add/">
+    <!-- CAMBIO AQUÍ: Ahora apunta a la gestión estética y abre el modal -->
+    <a class="accion" href="{% url 'gestion_servicios' %}?nuevo=1">
         <span>💅</span>
         Agregar servicio
     </a>

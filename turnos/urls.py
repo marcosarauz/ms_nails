@@ -10,6 +10,7 @@ from .views import (
     registro,
     mis_turnos,
     configuracion,
+    gestion_servicios, # <--- Agregado
 )
 
 urlpatterns = [
@@ -24,6 +25,9 @@ urlpatterns = [
     path('dashboard/', dashboard, name='dashboard'),
     path('agenda/', agenda, name='agenda'),
     path('configuracion/', configuracion, name='configuracion'),
+    
+    # Nueva ruta para la gestión estética de servicios
+    path('configuracion/servicios/', gestion_servicios, name='gestion_servicios'),
 
     path('estado/<int:id>/<str:estado>/', cambiar_estado, name='estado'),
 
