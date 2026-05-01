@@ -12,6 +12,7 @@ from .views import (
     configuracion,
     gestion_servicios,
     gestion_clientes,
+    gestion_turnos,
 )
 
 urlpatterns = [
@@ -35,4 +36,6 @@ urlpatterns = [
     path('configuracion/clientes/', gestion_clientes, name='gestion_clientes'),
 
     path('gracias/', gracias, name='gracias'),
+
+    path('configuracion/turnos/', gestion_turnos, name='gestion_turnos'),
 ]

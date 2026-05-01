@@ -1,0 +1,186 @@
+{% extends 'base_panel.html' %}
+
+{% block title %}Listado de Turnos{% endblock %}
+
+{% block extra_css %}
+<style>
+    .header-turnos {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+
+    /* Estilo de los filtros superiores */
+    .filtros {
+        display: flex;
+        gap: 10px;
+        background: #fff4fb;
+        padding: 8px;
+        border-radius: 18px;
+        border: 1px solid #f3c6e2;
+    }
+
+    .btn-filtro {
+        padding: 8px 18px;
+        border-radius: 12px;
+        text-decoration: none;
+        font-size: 14px;
+        color: #d85caf;
+        font-weight: bold;
+        transition: 0.2s;
+    }
+
+    .btn-filtro.active {
+        background: #d85caf;
+        color: white;
+    }
+
+    /* Contenedor de la tabla estética */
+    .tabla-container {
+        background: white;
+        border-radius: 25px;
+        padding: 20px;
+        border: 1px solid #f3c6e2;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th {
+        text-align: left;
+        padding: 15px;
+        color: #d85caf;
+        border-bottom: 2px solid #fff4fb;
+        font-size: 14px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    td {
+        padding: 18px 15px;
+        border-bottom: 1px solid #fff4fb;
+        vertical-align: middle;
+    }
+
+    tr:last-child td {
+        border-bottom: none;
+    }
+
+    /* Badges de estado personalizados */
+    .badge-estado {
+        padding: 6px 14px;
+        border-radius: 10px;
+        font-size: 12px;
+        font-weight: bold;
+        display: inline-block;
+    }
+
+    .pendiente { background: #fff9c4; color: #8a6d3b; } /* Amarillo */
+    .confirmado { background: #e8f5e9; color: #2e7d32; } /* Verde */
+    .finalizado { background: #e3f2fd; color: #1565c0; } /* Azul */
+    .cancelado { background: #ffebee; color: #c62828; } /* Rojo */
+
+    .cliente-nom { 
+        font-weight: bold; 
+        color: #333; 
+        font-size: 16px;
+    }
+
+    .servicio-tag {
+        color: #d85caf;
+        background: #fff4fb;
+        padding: 4px 10px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .fecha-box {
+        line-height: 1.2;
+    }
+
+    .btn-editar-turno {
+        color: #888;
+        text-decoration: none;
+        font-size: 14px;
+        border: 1px solid #ddd;
+        padding: 5px 12px;
+        border-radius: 10px;
+        transition: 0.2s;
+    }
+
+    .btn-editar-turno:hover {
+        background: #f8f8f8;
+        color: #333;
+    }
+</style>
+{% endblock %}
+
+{% block contenido %}
+
+<div class="header-turnos">
+    <div>
+        <h1>📋 Todos los Turnos</h1>
+        <p style="color: #666;">Historial y próximos turnos registrados.</p>
+    </div>
+
+    <!-- Filtros de Estado -->
+    <div class="filtros">
+        <a href="{% url 'gestion_turnos' %}" class="btn-filtro {% if not estado_filtro %}active{% endif %}">Todos</a>
+        <a href="?estado=pendiente" class="btn-filtro {% if estado_filtro == 'pendiente' %}active{% endif %}">Pendientes</a>
+        <a href="?estado=confirmado" class="btn-filtro {% if estado_filtro == 'confirmado' %}active{% endif %}">Confirmados</a>
+    </div>
+</div>
+
+<div class="tabla-container">
+    <table>
+        <thead>
+            <tr>
+                <th>Fecha y Hora</th>
+                <th>Cliente</th>
+                <th>Servicio</th>
+                <th>Estado</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for turno in turnos %}
+            <tr>
+                <td>
+                    <div class="fecha-box">
+                        <div style="font-weight: bold; color: #333;">{{ turno.fecha|date:"d/m/Y" }}</div>
+                        <div style="color: #d85caf; font-size: 14px; font-weight: bold;">{{ turno.hora }} hs</div>
+                    </div>
+                </td>
+                <td>
+                    <div class="cliente-nom text-capitalize">{{ turno.cliente.nombre }}</div>
+                    <div style="font-size: 13px; color: #888;">{{ turno.cliente.telefono }}</div>
+                </td>
+                <td>
+                    <span class="servicio-tag text-capitalize">{{ turno.servicio.nombre }}</span>
+                </td>
+                <td>
+                    <span class="badge-estado {{ turno.estado }}">
+                        {{ turno.estado|upper }}
+                    </span>
+                </td>
+                <td class="text-end">
+                    <a href="/admin/turnos/turno/{{ turno.id }}/change/" class="btn-editar-turno">Editar</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="text-center py-5">
+                    <p class="text-muted">No se encontraron turnos con estos criterios.</p>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

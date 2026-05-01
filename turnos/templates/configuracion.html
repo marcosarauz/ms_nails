@@ -78,7 +78,7 @@
 
 <div class="grid">
 
-    <!-- Tarjeta de Servicios actualizada -->
+    <!-- 1. TARJETA SERVICIOS (YA ACTUALIZADA) -->
     <a class="card" href="{% url 'gestion_servicios' %}">
         <div class="icono">💅</div>
         <h2>Servicios</h2>
@@ -86,6 +86,7 @@
         <div class="acciones"><span>Entrar</span></div>
     </a>
 
+    <!-- 2. TARJETA CLIENTES (ACTUALIZADA) -->
     <a class="card" href="{% url 'gestion_clientes' %}">
         <div class="icono">👩</div>
         <h2>Clientes</h2>
@@ -93,13 +94,14 @@
         <div class="acciones"><span>Entrar</span></div>
     </a>
 
-    <a class="card" href="/admin/turnos/turno/">
+    <a class="card" href="{% url 'gestion_turnos' %}">
         <div class="icono">📋</div>
         <h2>Turnos</h2>
         <p>Listado completo de todos los turnos.</p>
         <div class="acciones"><span>Entrar</span></div>
     </a>
 
+    <!-- Estas siguen al admin por ahora -->
     <a class="card" href="/admin/turnos/horariotrabajo/">
         <div class="icono">🕒</div>
         <h2>Horarios</h2>

@@ -293,3 +293,18 @@ def gestion_clientes(request):
         'clientes': clientes,
         'busqueda': busqueda
     })
+
+@user_passes_test(es_duena)
+def gestion_turnos(request):
+    """Vista estética para ver el listado de todos los turnos"""
+    estado_filtro = request.GET.get('estado')
+    
+    if estado_filtro:
+        turnos = Turno.objects.filter(estado=estado_filtro).order_by('-fecha', '-hora')
+    else:
+        turnos = Turno.objects.all().order_by('-fecha', '-hora')
+    
+    return render(request, 'gestion_turnos.html', {
+        'turnos': turnos,
+        'estado_filtro': estado_filtro
+    })
