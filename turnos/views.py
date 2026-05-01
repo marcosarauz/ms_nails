@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
 from django.contrib.auth import login
 from .models import Servicio, Cliente, Turno, HorarioTrabajo, DiaBloqueado
-from .forms import ServicioForm  # <--- Paso 1: Importamos el formulario
+from .forms import ServicioForm, TurnoForm  # <--- Paso 1: Importamos el formulario
 from urllib.parse import quote
 from datetime import date, datetime, timedelta
 
@@ -331,3 +331,18 @@ def gestion_bloqueos(request):
     return render(request, 'gestion_bloqueos.html', {
         'bloqueos': bloqueos
     })
+
+@user_passes_test(es_duena) # Solo la dueña puede crear turnos desde acá
+def crear_turno_admin(request):
+    """Vista estética para que la dueña cree turnos manualmente"""
+    if request.method == 'POST':
+        form = TurnoForm(request.POST)
+        if form.is_valid():
+            form.save()
+            # Al guardar, la mandamos a ver todos los turnos
+            return redirect('gestion_turnos')
+    else:
+        # Si entra por primera vez, el formulario está vacío
+        form = TurnoForm()
+    
+    return render(request, 'crear_turno_admin.html', {'form': form})

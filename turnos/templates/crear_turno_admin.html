@@ -1,0 +1,142 @@
+{% extends 'base_panel.html' %}
+
+{% block title %}Crear Nuevo Turno{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Contenedor con más aire */
+    .crear-turno-container {
+        max-width: 750px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+
+    .card-formulario {
+        background: white;
+        border-radius: 30px;
+        border: 2px solid #f3c6e2;
+        padding: 45px;
+        box-shadow: 0 15px 35px rgba(216, 92, 175, 0.1);
+    }
+
+    .titulo-form {
+        color: #d85caf;
+        font-weight: bold;
+        margin-bottom: 30px;
+        border-bottom: 2px solid #fff4fb;
+        padding-bottom: 15px;
+    }
+
+    /* Espaciado real entre cada grupo de campo */
+    .campo-grupo {
+        margin-bottom: 25px; /* Aquí le damos el aire que faltaba */
+    }
+
+    .form-label {
+        font-weight: bold;
+        color: #444;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 15px;
+    }
+
+    /* Inputs más grandes y elegantes */
+    .form-control, .form-select {
+        padding: 12px 20px !important;
+        font-size: 16px !important;
+        background-color: #fff;
+        transition: 0.3s;
+    }
+
+    .border-rosa {
+        border: 1.5px solid #f3c6e2 !important;
+    }
+
+    .border-rosa:focus {
+        border-color: #d85caf !important;
+        box-shadow: 0 0 0 4px rgba(216, 92, 175, 0.1) !important;
+    }
+
+    .btn-guardar-turno {
+        background: #d85caf;
+        color: white;
+        border: none;
+        padding: 16px;
+        border-radius: 18px;
+        font-weight: bold;
+        width: 100%;
+        font-size: 18px;
+        margin-top: 20px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .btn-guardar-turno:hover {
+        background: #c34a9a;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(216, 92, 175, 0.3);
+    }
+
+    .btn-cancelar {
+        display: inline-block;
+        margin-top: 20px;
+        color: #999;
+        text-decoration: none;
+        font-weight: 500;
+        transition: 0.2s;
+    }
+
+    .btn-cancelar:hover {
+        color: #666;
+    }
+</style>
+{% endblock %}
+
+{% block contenido %}
+<div class="crear-turno-container">
+    
+    <div class="card-formulario">
+        <div class="titulo-form">
+            <h1 class="mb-0">✨ Agendar Turno</h1>
+        </div>
+        
+        <p class="text-muted mb-5">Ingresá los detalles para la nueva cita en el centro.</p>
+        
+        <form method="POST">
+            {% csrf_token %}
+            
+            {% for field in form %}
+            <div class="campo-grupo">
+                <label for="{{ field.id_for_label }}" class="form-label">
+                    <span style="font-size: 1.2rem;">
+                        {% if field.name == 'cliente' %}👤{% endif %}
+                        {% if field.name == 'servicio' %}💅{% endif %}
+                        {% if field.name == 'fecha' %}📅{% endif %}
+                        {% if field.name == 'hora' %}🕒{% endif %}
+                        {% if field.name == 'estado' %}⚙️{% endif %}
+                    </span>
+                    {{ field.label }}
+                </label>
+                {{ field }}
+                {% if field.errors %}
+                <div class="text-danger small mt-2 px-2">
+                    {{ field.errors|striptags }}
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+            
+            <button type="submit" class="btn-guardar-turno">
+                Confirmar y Agendar
+            </button>
+            
+            <div class="text-center">
+                <a href="{% url 'dashboard' %}" class="btn-cancelar">Volver al inicio</a>
+            </div>
+        </form>
+    </div>
+
+</div>
+{% endblock %}
