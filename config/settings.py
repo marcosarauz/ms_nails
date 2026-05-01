@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-&i0fdd&)$g3o=bvgu1q=ad^fq7df@hmo^bugexn#_5gnwdmege'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -145,3 +145,7 @@ JAZZMIN_SETTINGS = {
 
     "theme": "flatly",  
 }
+
+ALLOWED_HOSTS = ['*']
+
+STATIC_ROOT = 'staticfiles'
