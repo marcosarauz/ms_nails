@@ -10,14 +10,18 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 
 def crear_admin(request):
-    if not User.objects.filter(username='admin').exists():
-        User.objects.create_superuser(
-            username='admin',
-            password='1234test',
-            email='admin@test.com'
-        )
-        return HttpResponse("Admin creado")
-    return HttpResponse("Ya existe")
+    user, creado = User.objects.get_or_create(username='admin')
+
+    user.email = 'admin@test.com'
+    user.is_staff = True
+    user.is_superuser = True
+    user.is_active = True
+    user.set_password('1234test')
+    user.save()
+
+    if creado:
+        return HttpResponse("Admin creado y contraseña seteada")
+    return HttpResponse("Admin actualizado y contraseña reseteada")
 
 
 def es_duena(user):
