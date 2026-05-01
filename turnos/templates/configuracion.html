@@ -109,12 +109,13 @@
     <div class="acciones"><span>Entrar</span></div>
 </a>
 
-    <a class="card" href="/admin/turnos/diabloqueado/">
-        <div class="icono">🚫</div>
-        <h2>Días bloqueados</h2>
-        <p>Bloquear vacaciones, feriados o días libres.</p>
-        <div class="acciones"><span>Entrar</span></div>
-    </a>
+
+<a class="card" href="{% url 'gestion_bloqueos' %}">
+    <div class="icono">🚫</div>
+    <h2>Días bloqueados</h2>
+    <p>Bloquear vacaciones, feriados o días libres.</p>
+    <div class="acciones"><span>Entrar</span></div>
+</a>
 
     <a class="card" href="{% url 'dashboard' %}">
         <div class="icono">🏠</div>

@@ -321,3 +321,13 @@ def gestion_horarios(request):
         'horarios': horarios,
         'dias_semana': dias_semana
     })
+
+@user_passes_test(es_duena)
+def gestion_bloqueos(request):
+    """Vista para manejar vacaciones y días libres"""
+    hoy = date.today()
+    # Mostramos primero los bloqueos futuros
+    bloqueos = DiaBloqueado.objects.filter(fecha__gte=hoy).order_by('fecha')
+    return render(request, 'gestion_bloqueos.html', {
+        'bloqueos': bloqueos
+    })

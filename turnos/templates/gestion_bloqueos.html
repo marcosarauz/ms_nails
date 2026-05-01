@@ -1,0 +1,123 @@
+{% extends 'base_panel.html' %}
+
+{% block title %}Días Bloqueados{% endblock %}
+
+{% block extra_css %}
+<style>
+    .header-bloqueos {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+
+    .btn-bloquear {
+        background: #d85caf;
+        color: white;
+        padding: 12px 25px;
+        border-radius: 15px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: 0.2s;
+    }
+
+    .btn-bloquear:hover {
+        background: #b0468d;
+        color: white;
+        transform: scale(1.05);
+    }
+
+    .lista-bloqueos {
+        display: grid;
+        gap: 15px;
+    }
+
+    .bloqueo-item {
+        background: white;
+        border: 2px solid #f3c6e2;
+        border-radius: 20px;
+        padding: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+    }
+
+    .bloqueo-info {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .fecha-circulo {
+        background: #fff4fb;
+        color: #d85caf;
+        width: 60px;
+        height: 60px;
+        border-radius: 15px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        border: 1px solid #f3c6e2;
+    }
+
+    .motivo-text {
+        font-weight: bold;
+        color: #333;
+        font-size: 18px;
+    }
+
+    .btn-eliminar {
+        color: #f44336;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: bold;
+        padding: 8px 15px;
+        border-radius: 10px;
+        transition: 0.2s;
+    }
+
+    .btn-eliminar:hover {
+        background: #ffebee;
+    }
+</style>
+{% endblock %}
+
+{% block contenido %}
+
+<div class="header-bloqueos">
+    <div>
+        <h1>🚫 Días Bloqueados</h1>
+        <p style="color: #666;">Fechas donde el sistema no permitirá reservar turnos.</p>
+    </div>
+    <a href="/admin/turnos/diabloqueado/add/" class="btn-bloquear">+ Bloquear Fecha</a>
+</div>
+
+<div class="lista-bloqueos">
+    {% for b in bloqueos %}
+    <div class="bloqueo-item">
+        <div class="bloqueo-info">
+            <div class="fecha-circulo">
+                <span style="font-size: 20px;">{{ b.fecha|date:"d" }}</span>
+                <span style="font-size: 10px; text-transform: uppercase;">{{ b.fecha|date:"M" }}</span>
+            </div>
+            <div>
+                <div class="motivo-text">{{ b.motivo|default:"Día libre / Feriado" }}</div>
+                <div style="color: #888;">{{ b.fecha|date:"l" }}</div>
+            </div>
+        </div>
+        
+        <div>
+            <a href="/admin/turnos/diabloqueado/{{ b.id }}/delete/" class="btn-eliminar">Eliminar bloqueo</a>
+        </div>
+    </div>
+    {% empty %}
+    <div class="text-center py-5" style="background: #fff4fb; border-radius: 25px; border: 2px dashed #f3c6e2;">
+        <p class="text-muted mb-0">No hay días bloqueados próximamente.</p>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
