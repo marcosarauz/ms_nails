@@ -2,112 +2,81 @@
 
 {% block title %}Horarios de Trabajo{% endblock %}
 
-{% block extra_css %}
-<style>
-    .header-horarios {
-        margin-bottom: 30px;
-    }
-
-    .grid-horarios {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 20px;
-    }
-
-    .card-dia {
-        background: white;
-        border: 2px solid #f3c6e2;
-        border-radius: 22px;
-        padding: 25px;
-        transition: 0.2s;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .card-dia.inactivo {
-        background: #f9f9f9;
-        border-color: #eee;
-        opacity: 0.7;
-    }
-
-    .dia-nombre {
-        font-size: 20px;
-        font-weight: bold;
-        color: #d85caf;
-        margin-bottom: 15px;
-        display: block;
-    }
-
-    .horario-info {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        font-size: 18px;
-        font-weight: bold;
-        color: #333;
-    }
-
-    .badge-activo {
-        position: absolute;
-        top: 15px;
-        right: 15px;
-        font-size: 12px;
-        padding: 4px 10px;
-        border-radius: 10px;
-        background: #e8f5e9;
-        color: #2e7d32;
-        font-weight: bold;
-    }
-
-    .badge-inactivo {
-        background: #ffebee;
-        color: #c62828;
-    }
-
-    .btn-edit-horario {
-        margin-top: 20px;
-        display: block;
-        text-align: center;
-        background: #fff4fb;
-        color: #d85caf;
-        text-decoration: none;
-        padding: 8px;
-        border-radius: 12px;
-        font-weight: bold;
-        border: 1px solid #f3c6e2;
-    }
-</style>
-{% endblock %}
-
 {% block contenido %}
 
-<div class="header-horarios">
-    <h1>🕒 Horarios de Atención</h1>
-    <p style="color: #666;">Configurá los días y rangos horarios en los que el centro está abierto.</p>
+<h1>🕒 Horarios de Atención</h1>
+<p style="color:#666;">Configurá los días y horarios en los que se pueden reservar turnos.</p>
+
+<div style="background:white; padding:25px; border-radius:22px; margin-bottom:30px;">
+    <h2>Agregar horario</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <label>Día</label>
+        <select name="dia" required>
+            {% for valor, nombre in dias_semana %}
+                <option value="{{ valor }}">{{ nombre }}</option>
+            {% endfor %}
+        </select>
+
+        <label>Hora inicio</label>
+        <input type="time" name="hora_inicio" required>
+
+        <label>Hora fin</label>
+        <input type="time" name="hora_fin" required>
+
+        <label style="display:flex; gap:10px; align-items:center; margin-top:15px;">
+            <input type="checkbox" name="activo" checked>
+            Activo
+        </label>
+
+        <button type="submit">Guardar horario</button>
+    </form>
 </div>
 
-<div class="grid-horarios">
+<div style="display:grid; gap:15px;">
     {% for h in horarios %}
-    <div class="card-dia {% if not h.activo %}inactivo{% endif %}">
-        {% if h.activo %}
-            <span class="badge-activo">ACTIVO</span>
-        {% else %}
-            <span class="badge-activo badge-inactivo">CERRADO</span>
-        {% endif %}
+        <div style="background:white; padding:20px; border-radius:18px; border:2px solid #f3c6e2;">
+            <strong style="color:#d85caf; font-size:20px;">{{ h.get_dia_display }}</strong>
+            <p>{{ h.hora_inicio|time:"H:i" }} a {{ h.hora_fin|time:"H:i" }}</p>
 
-        <span class="dia-nombre">{{ h.get_dia_display }}</span>
-        
-        <div class="horario-info">
-            <span>{{ h.hora_inicio|time:"H:i" }}</span>
-            <span style="color: #d85caf;">➔</span>
-            <span>{{ h.hora_fin|time:"H:i" }}</span>
+            {% if h.activo %}
+                <span style="color:green; font-weight:bold;">Activo</span>
+            {% else %}
+                <span style="color:red; font-weight:bold;">Cerrado</span>
+            {% endif %}
         </div>
-
-        <a href="/admin/turnos/horariotrabajo/{{ h.id }}/change/" class="btn-edit-horario">Cambiar horario</a>
-    </div>
     {% empty %}
-    <p>No hay horarios configurados aún.</p>
+        <p>No hay horarios configurados aún.</p>
     {% endfor %}
 </div>
+
+<style>
+    label {
+        display: block;
+        margin-top: 15px;
+        font-weight: bold;
+    }
+
+    input, select {
+        width: 100%;
+        padding: 12px;
+        border-radius: 12px;
+        border: 1px solid #ddd;
+        margin-top: 6px;
+    }
+
+    button {
+        margin-top: 20px;
+        background: #d85caf;
+        color: white;
+        border: none;
+        padding: 14px 25px;
+        border-radius: 14px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+</style>
 
 {% endblock %}

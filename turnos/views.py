@@ -324,25 +324,58 @@ def gestion_turnos(request):
 
 @user_passes_test(es_duena)
 def gestion_horarios(request):
-    """Vista estética para manejar los horarios de trabajo"""
-    horarios = HorarioTrabajo.objects.all().order_by('dia')
-    # Diccionario para mostrar los nombres de los días en español
-    dias_semana = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']
-    
+    dias_semana = HorarioTrabajo.DIAS
+
+    if request.method == 'POST':
+        dia = request.POST.get('dia')
+        hora_inicio = request.POST.get('hora_inicio')
+        hora_fin = request.POST.get('hora_fin')
+        activo = request.POST.get('activo') == 'on'
+
+        if dia and hora_inicio and hora_fin:
+            HorarioTrabajo.objects.create(
+                dia=dia,
+                hora_inicio=hora_inicio,
+                hora_fin=hora_fin,
+                activo=activo
+            )
+            return redirect('gestion_horarios')
+
+    horarios = HorarioTrabajo.objects.all().order_by('dia', 'hora_inicio')
+
     return render(request, 'gestion_horarios.html', {
         'horarios': horarios,
         'dias_semana': dias_semana
     })
 
+
 @user_passes_test(es_duena)
 def gestion_bloqueos(request):
-    """Vista para manejar vacaciones y días libres"""
     hoy = date.today()
-    # Mostramos primero los bloqueos futuros
+
+    if request.method == 'POST':
+        fecha = request.POST.get('fecha')
+        motivo = request.POST.get('motivo')
+
+        if fecha:
+            DiaBloqueado.objects.create(
+                fecha=fecha,
+                motivo=motivo
+            )
+            return redirect('gestion_bloqueos')
+
     bloqueos = DiaBloqueado.objects.filter(fecha__gte=hoy).order_by('fecha')
+
     return render(request, 'gestion_bloqueos.html', {
         'bloqueos': bloqueos
     })
+
+
+@user_passes_test(es_duena)
+def eliminar_bloqueo(request, id):
+    bloqueo = get_object_or_404(DiaBloqueado, id=id)
+    bloqueo.delete()
+    return redirect('gestion_bloqueos')
 
 @user_passes_test(es_duena) # Solo la dueña puede crear turnos desde acá
 def crear_turno_admin(request):
