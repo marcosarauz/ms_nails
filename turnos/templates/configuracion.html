@@ -101,13 +101,13 @@
         <div class="acciones"><span>Entrar</span></div>
     </a>
 
-    <!-- Estas siguen al admin por ahora -->
-    <a class="card" href="/admin/turnos/horariotrabajo/">
-        <div class="icono">🕒</div>
-        <h2>Horarios</h2>
-        <p>Definir días y horarios de trabajo.</p>
-        <div class="acciones"><span>Entrar</span></div>
-    </a>
+    
+<a class="card" href="{% url 'gestion_horarios' %}">
+    <div class="icono">🕒</div>
+    <h2>Horarios</h2>
+    <p>Definir días y horarios de trabajo.</p>
+    <div class="acciones"><span>Entrar</span></div>
+</a>
 
     <a class="card" href="/admin/turnos/diabloqueado/">
         <div class="icono">🚫</div>

@@ -308,3 +308,16 @@ def gestion_turnos(request):
         'turnos': turnos,
         'estado_filtro': estado_filtro
     })
+
+
+@user_passes_test(es_duena)
+def gestion_horarios(request):
+    """Vista estética para manejar los horarios de trabajo"""
+    horarios = HorarioTrabajo.objects.all().order_by('dia')
+    # Diccionario para mostrar los nombres de los días en español
+    dias_semana = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']
+    
+    return render(request, 'gestion_horarios.html', {
+        'horarios': horarios,
+        'dias_semana': dias_semana
+    })

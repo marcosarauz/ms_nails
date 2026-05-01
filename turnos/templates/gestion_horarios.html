@@ -1,0 +1,113 @@
+{% extends 'base_panel.html' %}
+
+{% block title %}Horarios de Trabajo{% endblock %}
+
+{% block extra_css %}
+<style>
+    .header-horarios {
+        margin-bottom: 30px;
+    }
+
+    .grid-horarios {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+    }
+
+    .card-dia {
+        background: white;
+        border: 2px solid #f3c6e2;
+        border-radius: 22px;
+        padding: 25px;
+        transition: 0.2s;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .card-dia.inactivo {
+        background: #f9f9f9;
+        border-color: #eee;
+        opacity: 0.7;
+    }
+
+    .dia-nombre {
+        font-size: 20px;
+        font-weight: bold;
+        color: #d85caf;
+        margin-bottom: 15px;
+        display: block;
+    }
+
+    .horario-info {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 18px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .badge-activo {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        font-size: 12px;
+        padding: 4px 10px;
+        border-radius: 10px;
+        background: #e8f5e9;
+        color: #2e7d32;
+        font-weight: bold;
+    }
+
+    .badge-inactivo {
+        background: #ffebee;
+        color: #c62828;
+    }
+
+    .btn-edit-horario {
+        margin-top: 20px;
+        display: block;
+        text-align: center;
+        background: #fff4fb;
+        color: #d85caf;
+        text-decoration: none;
+        padding: 8px;
+        border-radius: 12px;
+        font-weight: bold;
+        border: 1px solid #f3c6e2;
+    }
+</style>
+{% endblock %}
+
+{% block contenido %}
+
+<div class="header-horarios">
+    <h1>🕒 Horarios de Atención</h1>
+    <p style="color: #666;">Configurá los días y rangos horarios en los que el centro está abierto.</p>
+</div>
+
+<div class="grid-horarios">
+    {% for h in horarios %}
+    <div class="card-dia {% if not h.activo %}inactivo{% endif %}">
+        {% if h.activo %}
+            <span class="badge-activo">ACTIVO</span>
+        {% else %}
+            <span class="badge-activo badge-inactivo">CERRADO</span>
+        {% endif %}
+
+        <span class="dia-nombre">{{ h.get_dia_display }}</span>
+        
+        <div class="horario-info">
+            <span>{{ h.hora_inicio|time:"H:i" }}</span>
+            <span style="color: #d85caf;">➔</span>
+            <span>{{ h.hora_fin|time:"H:i" }}</span>
+        </div>
+
+        <a href="/admin/turnos/horariotrabajo/{{ h.id }}/change/" class="btn-edit-horario">Cambiar horario</a>
+    </div>
+    {% empty %}
+    <p>No hay horarios configurados aún.</p>
+    {% endfor %}
+</div>
+
+{% endblock %}
