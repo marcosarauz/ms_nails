@@ -1,0 +1,133 @@
+{% extends 'base_cliente.html' %}
+
+{% block title %}Reservar turno{% endblock %}
+
+{% block extra_css %}
+<style>
+    .card {
+        max-width: 450px;
+        margin: auto;
+        text-align: center;
+    }
+
+    select, input {
+        width: 100%;
+        padding: 13px;
+        margin-bottom: 15px;
+        border-radius: 12px;
+        border: 1px solid #ddd;
+        font-size: 15px;
+        box-sizing: border-box;
+    }
+
+    button {
+        width: 100%;
+        padding: 14px;
+        border: none;
+        border-radius: 12px;
+        background: #d85caf;
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .horarios {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        margin-bottom: 18px;
+    }
+
+    .horario input {
+        display: none;
+    }
+
+    .horario span {
+        display: block;
+        padding: 12px;
+        border-radius: 12px;
+        border: 1px solid #d85caf;
+        color: #d85caf;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    .horario input:checked + span {
+        background: #d85caf;
+        color: white;
+    }
+
+    .error {
+        background: #ffe2e2;
+        color: #b00020;
+        padding: 10px;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        font-weight: bold;
+    }
+
+    .aviso {
+        color: #777;
+    }
+</style>
+{% endblock %}
+
+{% block contenido %}
+
+<div class="card">
+    <h1>Reservar turno</h1>
+    <p>Elegí servicio, fecha y horario</p>
+
+    {% if error %}
+        <div class="error">{{ error }}</div>
+    {% endif %}
+
+    <form method="GET">
+        <select name="servicio" required>
+            <option value="">Seleccioná un servicio</option>
+            {% for s in servicios %}
+                <option value="{{ s.id }}" {% if servicio_seleccionado == s.id|stringformat:"s" %}selected{% endif %}>
+                    {{ s.nombre }} - ${{ s.precio }} - {{ s.duracion }} min
+                </option>
+            {% endfor %}
+        </select>
+
+        <input type="date" name="fecha" value="{{ fecha_seleccionada }}" required>
+
+        <button type="submit">Ver horarios</button>
+    </form>
+
+    {% if fecha_seleccionada and servicio_seleccionado %}
+        <form method="POST">
+            {% csrf_token %}
+
+            <input type="text" name="nombre" placeholder="Tu nombre" value="{{ user.first_name }}" required>
+            <input type="text" name="telefono" placeholder="Teléfono" required>
+
+            <input type="hidden" name="servicio" value="{{ servicio_seleccionado }}">
+            <input type="hidden" name="fecha" value="{{ fecha_seleccionada }}">
+
+            <p class="aviso">Horarios disponibles:</p>
+
+            <div class="horarios">
+                {% for h in horarios %}
+                    <label class="horario">
+                        <input type="radio" name="hora" value="{{ h }}" required>
+                        <span>{{ h }}</span>
+                    </label>
+                {% empty %}
+                    <p>No hay horarios disponibles.</p>
+                {% endfor %}
+            </div>
+
+            {% if horarios %}
+                <button type="submit">Reservar turno</button>
+            {% endif %}
+        </form>
+    {% else %}
+        <p class="aviso">Primero seleccioná servicio y fecha para ver horarios.</p>
+    {% endif %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,161 @@
+{% extends 'base_panel.html' %}
+
+{% block title %}Inicio{% endblock %}
+
+{% block extra_css %}
+<style>
+    .titulo h1 {
+        margin: 0;
+        font-size: 34px;
+    }
+
+    .titulo p {
+        color: #666;
+    }
+
+    .acciones-rapidas {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 15px;
+        margin: 25px 0 30px;
+    }
+
+    .accion {
+        background: #d85caf;
+        color: white;
+        padding: 22px;
+        border-radius: 20px;
+        text-align: center;
+        text-decoration: none;
+        font-weight: bold;
+        box-shadow: 0 8px 22px rgba(216, 92, 175, 0.25);
+    }
+
+    .accion span {
+        display: block;
+        font-size: 28px;
+        margin-bottom: 8px;
+    }
+
+    .cards {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 15px;
+        margin-bottom: 30px;
+    }
+
+    .card {
+        background: #fff4fb;
+        padding: 22px;
+        border-radius: 20px;
+        text-align: center;
+        border: 1px solid #f3c6e2;
+    }
+
+    .numero {
+        font-size: 36px;
+        font-weight: bold;
+        color: #d85caf;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th {
+        background: #f3c6e2;
+        padding: 12px;
+        text-align: left;
+    }
+
+    td {
+        padding: 12px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .estado {
+        padding: 6px 12px;
+        border-radius: 20px;
+        background: #efe2ff;
+        font-weight: bold;
+    }
+</style>
+{% endblock %}
+
+{% block contenido %}
+
+<div class="titulo">
+    <h1>Inicio</h1>
+    <p>Panel rápido para manejar el negocio</p>
+</div>
+
+<div class="acciones-rapidas">
+    <a class="accion" href="/agenda/">
+        <span>📅</span>
+        Ver agenda
+    </a>
+
+    <a class="accion" href="/admin/turnos/turno/add/">
+        <span>➕</span>
+        Crear turno
+    </a>
+
+    <a class="accion" href="/admin/turnos/servicio/add/">
+        <span>💅</span>
+        Agregar servicio
+    </a>
+
+    <a class="accion" href="/admin/turnos/diabloqueado/add/">
+        <span>🚫</span>
+        Bloquear día
+    </a>
+</div>
+
+<div class="cards">
+    <div class="card">
+        <div class="numero">{{ pendientes }}</div>
+        <p>Pendientes</p>
+    </div>
+
+    <div class="card">
+        <div class="numero">{{ confirmados }}</div>
+        <p>Confirmados</p>
+    </div>
+
+    <div class="card">
+        <div class="numero">{{ finalizados }}</div>
+        <p>Finalizados</p>
+    </div>
+
+    <div class="card">
+        <div class="numero">{{ cancelados }}</div>
+        <p>Cancelados</p>
+    </div>
+</div>
+
+<h2>Turnos de hoy</h2>
+
+{% if turnos_hoy %}
+<table>
+    <tr>
+        <th>Hora</th>
+        <th>Cliente</th>
+        <th>Servicio</th>
+        <th>Estado</th>
+    </tr>
+
+    {% for t in turnos_hoy %}
+    <tr>
+        <td>{{ t.hora }}</td>
+        <td>{{ t.cliente.nombre }}</td>
+        <td>{{ t.servicio.nombre }}</td>
+        <td><span class="estado">{{ t.estado }}</span></td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>No hay turnos para hoy.</p>
+{% endif %}
+
+{% endblock %}

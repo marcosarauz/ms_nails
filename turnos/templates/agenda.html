@@ -1,0 +1,112 @@
+{% extends 'base_panel.html' %}
+
+{% block title %}Agenda{% endblock %}
+
+{% block extra_css %}
+<style>
+    h1 {
+        margin-top: 0;
+    }
+
+    .filtro {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 25px;
+    }
+
+    input {
+        padding: 12px;
+        border-radius: 12px;
+        border: 1px solid #ddd;
+    }
+
+    button {
+        padding: 12px 18px;
+        border: none;
+        border-radius: 12px;
+        background: #d85caf;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th {
+        background: #f3c6e2;
+        padding: 12px;
+        text-align: left;
+    }
+
+    td {
+        padding: 12px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .estado {
+        padding: 6px 10px;
+        border-radius: 20px;
+        background: #efe2ff;
+        font-size: 13px;
+        font-weight: bold;
+    }
+
+    .btn {
+        padding: 7px 10px;
+        border-radius: 10px;
+        text-decoration: none;
+        color: white;
+        font-size: 12px;
+        font-weight: bold;
+    }
+
+    .confirmar { background: #299b4f; }
+    .finalizar { background: #3b6fd8; }
+    .cancelar { background: #d83b3b; }
+</style>
+{% endblock %}
+
+{% block contenido %}
+
+<h1>Agenda de turnos</h1>
+<p>Buscá los turnos por fecha</p>
+
+<form class="filtro" method="GET">
+    <input type="date" name="fecha" value="{{ fecha }}" required>
+    <button type="submit">Ver turnos</button>
+</form>
+
+{% if turnos %}
+<table>
+    <tr>
+        <th>Hora</th>
+        <th>Cliente</th>
+        <th>Teléfono</th>
+        <th>Servicio</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+    </tr>
+
+    {% for t in turnos %}
+    <tr>
+        <td>{{ t.hora }}</td>
+        <td>{{ t.cliente.nombre }}</td>
+        <td>{{ t.cliente.telefono }}</td>
+        <td>{{ t.servicio.nombre }}</td>
+        <td><span class="estado">{{ t.estado }}</span></td>
+        <td>
+            <a class="btn confirmar" href="/estado/{{ t.id }}/confirmado/">Confirmar</a>
+            <a class="btn finalizar" href="/estado/{{ t.id }}/finalizado/">Finalizar</a>
+            <a class="btn cancelar" href="/estado/{{ t.id }}/cancelado/">Cancelar</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>No hay turnos para esta fecha.</p>
+{% endif %}
+
+{% endblock %}

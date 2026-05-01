@@ -1,0 +1,125 @@
+{% extends 'base_panel.html' %}
+
+{% block title %}Configuración{% endblock %}
+
+{% block extra_css %}
+<style>
+    h1 {
+        margin-top: 0;
+        font-size: 34px;
+    }
+
+    .subtitulo {
+        color: #666;
+        margin-bottom: 30px;
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+    }
+
+    .card {
+        background: #fff4fb;
+        border: 1px solid #f3c6e2;
+        border-radius: 22px;
+        padding: 25px;
+        text-decoration: none;
+        color: #222;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        transition: 0.2s;
+    }
+
+    .card:hover {
+        transform: translateY(-4px);
+        background: #f3c6e2;
+    }
+
+    .icono {
+        font-size: 36px;
+        margin-bottom: 10px;
+    }
+
+    .card h2 {
+        margin: 0 0 8px;
+    }
+
+    .card p {
+        color: #666;
+        margin: 0;
+    }
+
+    .acciones {
+        margin-top: 12px;
+    }
+
+    .acciones span {
+        background: #d85caf;
+        color: white;
+        padding: 8px 12px;
+        border-radius: 12px;
+        font-size: 13px;
+        font-weight: bold;
+    }
+
+    @media (max-width: 900px) {
+        .grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block contenido %}
+
+<h1>Configuración</h1>
+<p class="subtitulo">Desde acá la dueña puede manejar servicios, clientes, horarios, turnos y días bloqueados.</p>
+
+<div class="grid">
+
+    <a class="card" href="/admin/turnos/servicio/">
+        <div class="icono">💅</div>
+        <h2>Servicios</h2>
+        <p>Agregar, editar precios y duración.</p>
+        <div class="acciones"><span>Entrar</span></div>
+    </a>
+
+    <a class="card" href="/admin/turnos/cliente/">
+        <div class="icono">👩</div>
+        <h2>Clientes</h2>
+        <p>Ver datos de clientas registradas.</p>
+        <div class="acciones"><span>Entrar</span></div>
+    </a>
+
+    <a class="card" href="/admin/turnos/turno/">
+        <div class="icono">📋</div>
+        <h2>Turnos</h2>
+        <p>Listado completo de todos los turnos.</p>
+        <div class="acciones"><span>Entrar</span></div>
+    </a>
+
+    <a class="card" href="/admin/turnos/horariotrabajo/">
+        <div class="icono">🕒</div>
+        <h2>Horarios</h2>
+        <p>Definir días y horarios de trabajo.</p>
+        <div class="acciones"><span>Entrar</span></div>
+    </a>
+
+    <a class="card" href="/admin/turnos/diabloqueado/">
+        <div class="icono">🚫</div>
+        <h2>Días bloqueados</h2>
+        <p>Bloquear vacaciones, feriados o días libres.</p>
+        <div class="acciones"><span>Entrar</span></div>
+    </a>
+
+    <a class="card" href="/dashboard/">
+        <div class="icono">🏠</div>
+        <h2>Volver al inicio</h2>
+        <p>Regresar al panel principal.</p>
+        <div class="acciones"><span>Inicio</span></div>
+    </a>
+
+</div>
+
+{% endblock %}

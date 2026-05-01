@@ -1,0 +1,235 @@
+{% extends "admin/base.html" %}
+
+{% block title %}MstodaBella Nails{% endblock %}
+
+{% block branding %}
+<h1 id="site-name">
+    <a href="/admin/">MstodaBella Nails 💅</a>
+</h1>
+{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+
+<style>
+    :root {
+        --rosa: #d85caf;
+        --rosa-oscuro: #bf4598;
+        --rosa-claro: #f3c6e2;
+        --fondo: #f7d6ec;
+        --texto: #222;
+    }
+
+    body {
+        background: linear-gradient(135deg, #f7d6ec, #efe2ff) !important;
+        font-family: Arial, sans-serif !important;
+        color: var(--texto) !important;
+    }
+
+    #header {
+        background: white !important;
+        color: var(--rosa) !important;
+        padding: 18px 35px !important;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+    }
+
+    #branding h1 a {
+        color: var(--rosa) !important;
+        font-size: 26px !important;
+        font-weight: bold !important;
+    }
+
+    #user-tools,
+    #user-tools a {
+        color: #222 !important;
+        font-weight: bold !important;
+    }
+
+    div.breadcrumbs {
+        background: var(--rosa) !important;
+        color: white !important;
+        padding: 14px 35px !important;
+    }
+
+    div.breadcrumbs a {
+        color: white !important;
+    }
+
+    #container {
+        background: transparent !important;
+    }
+
+    #content {
+        background: white !important;
+        margin: 30px auto !important;
+        padding: 35px !important;
+        max-width: 1250px !important;
+        border-radius: 24px !important;
+        box-shadow: 0 14px 40px rgba(0,0,0,0.15);
+    }
+
+    h1 {
+        color: #111 !important;
+        font-size: 30px !important;
+        font-weight: bold !important;
+        margin-bottom: 25px !important;
+    }
+
+    #changelist {
+        background: white !important;
+        border-radius: 22px !important;
+    }
+
+    #changelist-form {
+        background: white !important;
+    }
+
+    #changelist table {
+        border-radius: 18px !important;
+        overflow: hidden !important;
+        border-collapse: separate !important;
+        border-spacing: 0 !important;
+    }
+
+    table thead th {
+        background: var(--rosa-claro) !important;
+        color: #111 !important;
+        padding: 15px !important;
+        font-weight: bold !important;
+        border: none !important;
+    }
+
+    table tbody td,
+    table tbody th {
+        padding: 15px !important;
+        border-bottom: 1px solid #f1d3e6 !important;
+        background: white !important;
+        color: #222 !important;
+    }
+
+    table tbody tr:nth-child(even) td,
+    table tbody tr:nth-child(even) th {
+        background: #fff7fd !important;
+    }
+
+    a:link,
+    a:visited {
+        color: var(--rosa) !important;
+        font-weight: bold !important;
+    }
+
+    .object-tools a,
+    .button,
+    input[type=submit],
+    input[type=button],
+    .submit-row input,
+    a.button {
+        background: var(--rosa) !important;
+        color: white !important;
+        border: none !important;
+        border-radius: 14px !important;
+        padding: 10px 16px !important;
+        font-weight: bold !important;
+    }
+
+    .object-tools a:hover,
+    .button:hover,
+    input[type=submit]:hover,
+    input[type=button]:hover,
+    .submit-row input:hover,
+    a.button:hover {
+        background: var(--rosa-oscuro) !important;
+    }
+
+    #toolbar {
+        background: #fff4fb !important;
+        border: 1px solid #f3c6e2 !important;
+        border-radius: 18px !important;
+        padding: 15px !important;
+        margin-bottom: 20px !important;
+    }
+
+    #toolbar input {
+        border-radius: 12px !important;
+        border: 1px solid #e4c3d8 !important;
+        padding: 10px !important;
+    }
+
+    #changelist-filter {
+        background: #fff4fb !important;
+        border-radius: 20px !important;
+        padding: 18px !important;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    }
+
+    #changelist-filter h2 {
+        background: var(--rosa) !important;
+        color: white !important;
+        border-radius: 14px !important;
+        padding: 12px !important;
+    }
+
+    #changelist-filter h3 {
+        color: #222 !important;
+        font-weight: bold !important;
+    }
+
+    #changelist-filter a {
+        color: var(--rosa-oscuro) !important;
+    }
+
+    .actions {
+        background: #fff4fb !important;
+        border-radius: 18px !important;
+        padding: 15px !important;
+        margin-bottom: 15px !important;
+    }
+
+    select,
+    input,
+    textarea {
+        border-radius: 12px !important;
+        border: 1px solid #e4c3d8 !important;
+        padding: 9px !important;
+        background: white !important;
+        color: #111 !important;
+    }
+
+    .paginator {
+        background: #fff4fb !important;
+        padding: 15px !important;
+        border-radius: 18px !important;
+        margin-top: 20px !important;
+    }
+
+    .submit-row {
+        background: #fff4fb !important;
+        border-radius: 18px !important;
+        border: none !important;
+        padding: 18px !important;
+    }
+
+    .module {
+        border: none !important;
+        border-radius: 20px !important;
+        overflow: hidden !important;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    }
+
+    .module h2,
+    .module caption {
+        background: var(--rosa-claro) !important;
+        color: #111 !important;
+        font-weight: bold !important;
+        padding: 14px !important;
+    }
+
+    .delete-confirmation form .cancel-link,
+    .deletelink {
+        background: #d83b3b !important;
+        color: white !important;
+        border-radius: 14px !important;
+        padding: 10px 16px !important;
+    }
+</style>
+{% endblock %}

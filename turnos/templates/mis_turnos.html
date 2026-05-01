@@ -1,0 +1,63 @@
+{% extends 'base_cliente.html' %}
+
+{% block title %}Mis turnos{% endblock %}
+
+{% block extra_css %}
+<style>
+    h1 {
+        margin-top: 0;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th {
+        background: #f3c6e2;
+        padding: 12px;
+        text-align: left;
+    }
+
+    td {
+        padding: 12px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .estado {
+        padding: 6px 10px;
+        border-radius: 20px;
+        background: #efe2ff;
+        font-weight: bold;
+    }
+</style>
+{% endblock %}
+
+{% block contenido %}
+
+<h1>Mis turnos</h1>
+<p>Acá podés ver tus reservas</p>
+
+{% if turnos %}
+<table>
+    <tr>
+        <th>Fecha</th>
+        <th>Hora</th>
+        <th>Servicio</th>
+        <th>Estado</th>
+    </tr>
+
+    {% for turno in turnos %}
+    <tr>
+        <td>{{ turno.fecha }}</td>
+        <td>{{ turno.hora }}</td>
+        <td>{{ turno.servicio.nombre }}</td>
+        <td><span class="estado">{{ turno.estado }}</span></td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>Todavía no tenés turnos reservados.</p>
+{% endif %}
+
+{% endblock %}

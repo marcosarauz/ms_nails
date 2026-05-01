@@ -1,0 +1,66 @@
+{% extends 'base_cliente.html' %}
+
+{% block title %}Registro{% endblock %}
+
+{% block extra_css %}
+<style>
+    .card {
+        max-width: 400px;
+        margin: auto;
+        text-align: center;
+    }
+
+    input {
+        width: 100%;
+        padding: 13px;
+        margin-bottom: 15px;
+        border-radius: 12px;
+        border: 1px solid #ddd;
+        font-size: 15px;
+    }
+
+    button {
+        width: 100%;
+        padding: 14px;
+        border: none;
+        border-radius: 12px;
+        background: #d85caf;
+        color: white;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .error {
+        background: #ffe2e2;
+        color: #b00020;
+        padding: 10px;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        font-weight: bold;
+    }
+</style>
+{% endblock %}
+
+{% block contenido %}
+
+<div class="card">
+    <h1>Crear cuenta</h1>
+    <p>Registrate para ver tus turnos</p>
+
+    {% if error %}
+        <div class="error">{{ error }}</div>
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <input type="text" name="nombre" placeholder="Tu nombre" required>
+        <input type="text" name="telefono" placeholder="Teléfono" required>
+        <input type="text" name="username" placeholder="Usuario" required>
+        <input type="password" name="password" placeholder="Contraseña" required>
+
+        <button type="submit">Registrarme</button>
+    </form>
+</div>
+
+{% endblock %}

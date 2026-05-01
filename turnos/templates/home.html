@@ -1,0 +1,118 @@
+{% extends 'base_cliente.html' %}
+
+{% block title %}MstodaBella Nails{% endblock %}
+
+{% block extra_css %}
+<style>
+    .hero {
+        display: grid;
+        grid-template-columns: 1.2fr 1fr;
+        gap: 30px;
+        align-items: center;
+    }
+
+    .hero h1 {
+        font-size: 42px;
+        margin-bottom: 10px;
+    }
+
+    .hero p {
+        font-size: 18px;
+        color: #666;
+        line-height: 1.5;
+    }
+
+    .acciones {
+        display: flex;
+        gap: 12px;
+        margin-top: 25px;
+    }
+
+    .acciones a {
+        background: #d85caf;
+        color: white;
+        padding: 14px 20px;
+        border-radius: 14px;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .acciones .secundario {
+        background: #222;
+    }
+
+    .galeria {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    .foto {
+        height: 160px;
+        border-radius: 22px;
+        background: #f3c6e2;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 40px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+    }
+
+    .servicios {
+        margin-top: 35px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+    }
+
+    .servicio {
+        background: #fff4fb;
+        padding: 20px;
+        border-radius: 18px;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    @media (max-width: 800px) {
+        .hero {
+            grid-template-columns: 1fr;
+        }
+
+        .servicios {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block contenido %}
+
+<div class="hero">
+    <div>
+        <h1>MstodaBella Nails 💅</h1>
+        <p>
+            Belleza, cuidado personal y turnos online.
+            Reservá tu turno de forma simple, rápida y organizada.
+        </p>
+
+        <div class="acciones">
+            <a href="/login/">Ingresar</a>
+            <a class="secundario" href="/registro/">Registrarse</a>
+        </div>
+    </div>
+
+    <div class="galeria">
+        <div class="foto">💅</div>
+        <div class="foto">✨</div>
+        <div class="foto">🌸</div>
+        <div class="foto">🩷</div>
+    </div>
+</div>
+
+<div class="servicios">
+    <div class="servicio">Semipermanente</div>
+    <div class="servicio">Kapping gel</div>
+    <div class="servicio">Esculpidas</div>
+</div>
+
+{% endblock %}

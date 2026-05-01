@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}MstodaBella Nails{% endblock %}</title>
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #f7d6ec, #efe2ff);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            width: 100%;
+            background: white;
+            padding: 16px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.12);
+        }
+
+        .brand {
+            font-size: 24px;
+            font-weight: bold;
+            color: #d85caf;
+        }
+
+        .menu {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .menu a, .menu button {
+            background: #d85caf;
+            color: white;
+            padding: 11px 16px;
+            border-radius: 14px;
+            text-decoration: none;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .user-box {
+            background: #fff4fb;
+            color: #222;
+            padding: 10px 14px;
+            border-radius: 14px;
+            font-weight: bold;
+        }
+
+        .salir {
+            background: #222 !important;
+        }
+
+        .page {
+            max-width: 1050px;
+            margin: 35px auto;
+            padding: 0 20px;
+        }
+
+        .contenedor {
+            background: white;
+            padding: 35px;
+            border-radius: 24px;
+            box-shadow: 0 14px 40px rgba(0,0,0,0.15);
+        }
+    </style>
+
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="brand">
+        {% if user.is_authenticated %}
+            Hola, {{ user.first_name|default:user.username }} 💅
+        {% else %}
+            MstodaBella Nails 💅
+        {% endif %}
+    </div>
+
+    <div class="menu">
+        {% if user.is_authenticated %}
+            <a href="/">Reservar</a>
+            <a href="/mis-turnos/">Mis turnos</a>
+
+            <span class="user-box">👤 {{ user.first_name|default:user.username }}</span>
+
+            <form method="POST" action="/logout/" style="margin:0;">
+                {% csrf_token %}
+                <button class="salir" type="submit">Salir</button>
+            </form>
+        {% else %}
+            <a href="/login/">Ingresar</a>
+            <a href="/registro/">Registrarse</a>
+        {% endif %}
+    </div>
+</nav>
+
+<main class="page">
+    <section class="contenedor">
+        {% block contenido %}{% endblock %}
+    </section>
+</main>
+
+</body>
+</html>
